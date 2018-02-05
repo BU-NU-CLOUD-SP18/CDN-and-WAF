@@ -1,62 +1,92 @@
-** **
+# CDN with WAF
 
-## Project Description Template
 
-The purpose of this Project Description is to present the ideas proposed and decisions made during the preliminary envisioning and inception phase of the project. The goal is to analyze an initial concept proposal at a strategic level of detail and attain/compose an agreement between the project team members and the project customer (mentors and instructors) on the desired solution and overall project direction.
+##Content Distribution Network with Web Application Firewall
 
-This template proposal contains a number of sections, which you can edit/modify/add/delete/organize as you like.  Some key sections we’d like to have in the proposal are:
+CDNs are very crucial to companies that do large scale data distribution, especially companies in streaming media industry such as Netflix. The fundamental idea is that it is faster to pull data from servers that are geographically closer or more accessible to you. In order to meet the demands for high speed and quality of content companies have begun to develop and spin out their own versions of CDN servers in order to distribute data among. Current service providers includes Akamai technologies, Amazon’s AWS, Verizon, etc.  
 
-- Vision: An executive summary of the vision, goals, users, and general scope of the intended project.
+<hr>
+###1.Vision and Goals Of The Project:
+The aim of our project is to design and develop our own version of a CDN with the emphasis on cyber security. The workload will be distributed among virtual cloud instances acting as cache servers. Multiple servers will form a cluster and each of them  has its own role, this includes Data Store, DNS management, REST Web server, and Cache servers. We will develop a backlog visualization tool which allows developers to be able to view common cyber attacks and show mitigations of those attacks. The CDN will be run on cloud servers, particularly, MOC (Massachusetts Open Cloud).<br><br>
+Our CDN will need to satisfy the following requirements:
 
-- Solution Concept: the approach the project team will take to meet the business needs. This section also provides an overview of the architectural and technical designs made for implementing the project.
+ - 1. Effectively balance workload across multiple computing resources. 
+ - 2. Instantiate virtual instances to construct cache servers dynamically. 
+ - 3. Log behavior that seems out of order.
+ - 4. Provide a RESt-like or REST API to the clients for managing servers.
+ - 5. Provide visual interface for demo purposes, developed in React.js.
 
-- Scope: the boundary of the solution defined by itemizing the intended features and functions in detail, determining what is out of scope, a release strategy and possibly the criteria by which the solution will be accepted by users and operations.
+Our ultimate goal is to generate our own limited CDN with integrated Web Application Firewall and provide an API to manage web services for prospective customers.
+<hr>
+### 2. Users/Personas Of The Project:
 
-Project Proposal can be used during the follow-up analysis and design meetings to give context to efforts of more detailed technical specifications and plans. It provides a clear direction for the project team; outlines project goals, priorities, and constraints; and sets expectations.
+CDN with WAF will be used by the website owner who  want to be able to scale their web services without adding their own infrastructure or want to scale their load for flash crowds without investing a lot of money for the hardware.
+<hr>
+### 3. Scope and Features Of The Project:
+ - We will use virtual machines instances on MOC OpenStack to simulate server behavior in our system.
+ - We will be using load generating tools to simulate load of a large number of clients of the customer to validate provide scaling of the customers website.
+ - We will customize our own DNS services to guarantee best fetching speed for clients. 
+ - We will develop firewall, leveraging mod_security or some WAF technology to filter and track common cyber attacks against our CDN system. 
+ - Users can access our provided services via RESTful web APIs deployed.
+ - Our system will be presented with web based GUI. 
 
-** **
+<hr>
+### 4. Solution Concept
+#####Current Solution:
+Our current proposed solution involves following different components that can be combined to form one complete service.
+#####Management Server:
+A simple Ubuntu server that has access to other services using ssh  or some other method with which it can poll server status data.
 
-## 1.   Vision and Goals Of The Project:
-
-The vision section describes the final desired state of the project once the project is complete. It also specifies the key goals of the project. This section provides a context for decision-making. A shared vision among all team members can help ensuring that the solution meets the intended goals. A solid vision clarifies perspective and facilitates decision-making.
-
-## 2. Users/Personas Of The Project:
-
-This section describes the principal user roles of the project together with the key characteristics of these roles. This information will inform the design and the user scenarios. A complete set of roles helps in ensuring that high-level requirements can be identified in the product backlog.
-
-** **
-
-## 3.   Scope and Features Of The Project:
-
-The Scope places a boundary around the solution by detailing the range of features and functions of the project. This section helps to clarify the solution scope and can explicitly state what will not be delivered as well.
-
-** **
-
-## 4. Solution Concept
-
-This section provides a high-level outline of the solution.
-
-Global Architectural Structure Of the Project:
-
-This section provides a high-level architecture or a conceptual diagram showing the scope of the solution. If wireframes or visuals have already been done, this section could also be used to show how the intended solution will look. This section also provides a walkthrough explanation of the architectural structure.
-
+ - The system will keep polling to check the load on cache servers, if the servers  exceeds a certain threshold, the system will start new instances of the cache servers (which will be saved as images).
+ - It will load the configuration for the cache servers from the stored configurations which are created when a new user .
+ - Every new instance should have the ssh public key for the management server so that it is able to poll for cpu, memory and bandwidth usage (Can just be manually stored in the instance image).
  
+#####Origin Server 
+Main web server that is being cached in the Varnish Cache servers.
 
-Design Implications and Discussion:
+ - This can be a simple model website where we are trying to balance load using cache server.
+ - This is where we will test if the website is able to handle high loads (Send huge amounts of traffic here and see if the cache servers are able to distribute the load).
+ - A Raspberry Pi with a simple web server can be used to simulate an origin server.
 
-This section discusses the implications and reasons of the design decisions made during the global architecture design.
+#####Varnish Cache Server
+Simple low CPU powered instances with varnish cache installed and pointing to an origin server.
 
-## 5. Acceptance criteria
+ - These can be be low powered so that they are overloaded easily and we can test the dynamic load balancing feature easily.
+ - The management service should have access to all the cache servers so it can poll for current server status to each of them.
 
-This section discusses the minimum acceptance criteria at the end of the project and stretch goals.
+#####REST API with React User Interface
+Simple front end for the client to be able to check the status for the cache servers (the load, the traffic, CPU, memory, Bandwidth Usage, the number of cache instances that are up). The management server has all the data that the client needs so we could just create a simple flask server on the management and send all the data to a simple web app that the client has access to. (User authentication can be added later)
 
-## 6.  Release Planning:
+#####DNS Server
+An Ubuntu VM instance can do this job.
 
-Release planning section describes how the project will deliver incremental sets of features and functions in a series of releases to completion. Identification of user stories associated with iterations that will ease/guide sprint planning sessions is encouraged. Higher level details for the first iteration is expected.
+- We need the server to be able to direct traffic to a cache server.
+- The rules that this server uses to direct traffic can be complex (e.g. based on geolocation of the client, previous visits), but initially, Round Robin should work fine and can be improved upon later if there’s more time.
 
-** **
+<figure>
+	<a ><img src="/images/BlockDiagram.jpg" alt=""></a>
+</figure>
 
-For more help on markdown, see
-https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+<hr>
 
-In particular, you can add images like this (clone the repository to see details):
+###5. Acceptance criteria
+ - Shows clear efficiency in load balancing and latency versus system without CDN.
+ - Demonstrates the availability to filter cyber attacks.
+ - Provides clients accessible RESTful APIs.  
+
+<hr>
+
+###6.Demo Plans
+Demonstrate Web user interface to display back-end modules and processes.
+
+ - Basic user management functions without infrastructure
+ - Data Store Server
+ - Management and DNS Management Server
+
+Demonstrate client-side usage with Cache access. 
+ - Without load balancing
+ - With load balancing but without security layers
+ - With security layers
+
+Load Scaling Demonstration (autoscale)
+
