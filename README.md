@@ -1,12 +1,12 @@
 # CDN with WAF
 
 
-##Content Distribution Network with Web Application Firewall
+## Content Distribution Network with Web Application Firewall
 
 CDNs are very crucial to companies that do large scale data distribution, especially companies in streaming media industry such as Netflix. The fundamental idea is that it is faster to pull data from servers that are geographically closer or more accessible to you. In order to meet the demands for high speed and quality of content companies have begun to develop and spin out their own versions of CDN servers in order to distribute data among. Current service providers includes Akamai technologies, Amazon’s AWS, Verizon, etc.  
 
 <hr>
-###1.Vision and Goals Of The Project:
+### 1.Vision and Goals Of The Project:
 The aim of our project is to design and develop our own version of a CDN with the emphasis on cyber security. The workload will be distributed among virtual cloud instances acting as cache servers. Multiple servers will form a cluster and each of them  has its own role, this includes Data Store, DNS management, REST Web server, and Cache servers. We will develop a backlog visualization tool which allows developers to be able to view common cyber attacks and show mitigations of those attacks. The CDN will be run on cloud servers, particularly, MOC (Massachusetts Open Cloud).<br><br>
 Our CDN will need to satisfy the following requirements:
 
