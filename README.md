@@ -94,3 +94,11 @@ Demonstrate client-side usage with Cache access.
 
 Load Scaling Demonstration (autoscale)
 
+# Team Members
+
+* Anand Sanmukhani
+* Berk Gur
+* Hao "Edward" Xu
+* Samit "Jade" Dhangwattanotai
+* Xuanhao Mi
+
