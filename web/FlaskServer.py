@@ -1,6 +1,5 @@
 import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
-import flask.ext.login as flask_login
 
 application = Flask(__name__)
 
