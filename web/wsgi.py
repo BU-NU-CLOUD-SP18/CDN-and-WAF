@@ -1,5 +1,5 @@
 from FlaskServer import application
 
 if __name__ == "__main__":
-    application.secret_key = 'CDN-with-WAF'
+    application.config['SECRET_KEY'] = "CDN-with_WAF"
     application.run()

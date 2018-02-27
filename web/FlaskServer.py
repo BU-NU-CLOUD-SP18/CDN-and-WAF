@@ -39,5 +39,5 @@ def login_user():
 
 
 if __name__ == "__main__":
-    application.secret_key = 'CDN-with-WAF'
+    application.config['SECRET_KEY'] = "CDN-with_WAF"
     application.run(host='0.0.0.0', debug=True, port=6081)
