@@ -8,7 +8,6 @@
   <!-- CORE CSS-->
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
-
 <style type="text/css">
 html,
 body {
@@ -30,11 +29,20 @@ body {
 </head>
 
 <body class="red">
-
-
   <div id="login-page" class="row">
     <div class="col s12 z-depth-6 card-panel">
-      <form class="login-form">
+        {% block content %}
+          <div class="container">
+              {% for message in get_flashed_messages() %}
+              <div class="alert alert-warning">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  {{ message }}
+              </div>
+              {% endfor %}
+              {% block page_content %}{% endblock %}
+          </div>
+        {% endblock %}
+      <form class="login-form" method="post" action="{{ url_for('login_user') }}">
         <div class="row">
           <div class="input-field col s12 center">
             <img src="http://www.bu.edu/philo/files/2015/08/PhilLogoRedNoText.png" alt="" class="responsive-img valign profile-image-login">
@@ -44,14 +52,14 @@ body {
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input class="validate" id="email" type="email">
+            <input class="validate" id="email" type="email" name="email">
             <label for="email" data-error="wrong" data-success="right" class="center-align">Email</label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
-            <input id="password" type="password">
+            <input class="validate" id="password" type="password" name="passwd">
             <label for="password">Password</label>
           </div>
         </div>
@@ -62,8 +70,8 @@ body {
           </div>
         </div>
         <div class="row">
-          <div class="input-field col s12", style="width: 390px"> 
-            <a href="status" class="btn waves-effect waves-light col s12">Login</a>
+          <div class="input-field col s12", style="width: 390px">
+            <input type="submit" value="Login" href="status" class="btn waves-effect waves-light col s12"></input>
           </div>
         </div>
         <div class="row">
@@ -74,7 +82,6 @@ body {
               <p class="margin right-align medium-small"><a href="forgot-password">Forgot password?</a></p>
           </div>          
         </div>
-
       </form>
     </div>
   </div>
