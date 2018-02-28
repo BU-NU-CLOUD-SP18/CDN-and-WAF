@@ -7,7 +7,7 @@ from models import db
 from models import User
 
 application = Flask(__name__)
-application.config['SQLALCHEMY_DATABASE_URI'] = ""
+application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@localhost/FlaskServer"
 
 db.init_app(application)
 migrate = Migrate(application, db)
