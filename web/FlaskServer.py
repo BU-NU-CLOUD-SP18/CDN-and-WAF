@@ -1,7 +1,16 @@
 import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
+from flask.ext.sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+from models import db
+from models import User
 
 application = Flask(__name__)
+application.config['SQLALCHEMY_DATABASE_URI'] = ""
+
+db.init_app(application)
+migrate = Migrate(application, db)
 
 #backend function
 def isUserInDB(email):
@@ -10,8 +19,8 @@ def isPasswdCorr(email, passwd):
     pass
 
 @application.route("/")
-def hello():
-    return "<h1 style='color:blue'>Welcome to 'CDN with WAF' project!</h1>"
+def index():
+    return render_template('index.html')
 
 @application.route("/signup")
 def signup():
@@ -41,6 +50,19 @@ def login_user():
         return flask.redirect(flask.url_for('login_user'))
     return flask.redirect(flask.url_for('status'))
 
+# Save e-mail to database and send to success page
+@application.route('/prereg', methods=['POST'])
+def prereg():
+    email = None
+    if request.method == 'POST':
+        email = request.form['email']
+        # Check that email does not already exist (not a great query, but works)
+        if not db.session.query(User).filter(User.email == email).count():
+            reg = User(email)
+            db.session.add(reg)
+            db.session.commit()
+            return render_template('success.html')
+    return render_template('index.html')
 
 
 if __name__ == "__main__":
