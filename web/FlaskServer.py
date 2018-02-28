@@ -1,6 +1,6 @@
 import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from models import db
