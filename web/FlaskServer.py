@@ -17,6 +17,10 @@ def hello():
 def signup():
     return render_template('register.html')
 
+@application.route("/instances")
+def instances():
+    return render_template('instances.html')
+
 @application.route('/login', methods=['GET'])
 def login_page():
     return render_template('login.html')
@@ -36,6 +40,7 @@ def login_user():
         flash("fields cannot be blank")
         return flask.redirect(flask.url_for('login_user'))
     return flask.redirect(flask.url_for('status'))
+
 
 
 if __name__ == "__main__":
