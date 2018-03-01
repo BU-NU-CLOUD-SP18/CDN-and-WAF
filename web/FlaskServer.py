@@ -26,9 +26,9 @@ def index():
 def signup():
     return render_template('register.html')
 
-@application.route("/instances")
+@application.route("/status")
 def instances():
-    return render_template('instances.html')
+    return render_template('status.html')
 
 @application.route('/login', methods=['GET'])
 def login_page():
