@@ -7,7 +7,7 @@ from models import db
 from models import User
 
 application = Flask(__name__)
-application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@localhost/FlaskServer"
+application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
 
 db.init_app(application)
 migrate = Migrate(application, db)
@@ -18,9 +18,31 @@ def isUserInDB(email):
 def isPasswdCorr(email, passwd):
     pass
 
-@application.route("/")
+@application.route("/index")
 def index():
     return render_template('index.html')
+
+@application.route('/')
+def view_registered_users():
+    users = User.query.all()
+    return render_template('guest_list.html', guests=users)
+
+@application.route('/register', methods = ['GET'])
+def view_registration_form():
+    return render_template('guest_registration.html')
+
+@application.route('/register', methods = ['POST'])
+def register_guest():
+    name = request.form.get('name')
+    email = request.form.get('email')
+
+
+    user = User(name, email)
+    db.session.add(user)
+    db.session.commit()
+
+    return render_template('guest_confirmation.html',
+        name=name, email=email)
 
 @application.route("/signup")
 def signup():
