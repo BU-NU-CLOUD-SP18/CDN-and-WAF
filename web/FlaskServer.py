@@ -7,7 +7,7 @@ from models import db
 from models import User
 
 application = Flask(__name__)
-application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
+application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://Jadedh:Jadethedh224@localhost/FlaskServer"
 
 db.init_app(application)
 migrate = Migrate(application, db)
@@ -48,9 +48,9 @@ def register_guest():
 def signup():
     return render_template('register.html')
 
-@application.route("/instances")
+@application.route("/status")
 def instances():
-    return render_template('instances.html')
+    return render_template('status.html')
 
 @application.route('/login', methods=['GET'])
 def login_page():
