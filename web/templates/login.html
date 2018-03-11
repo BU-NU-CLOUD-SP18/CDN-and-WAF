@@ -25,7 +25,7 @@ body {
   margin: 0 !important;
 }
 </style>
-  
+
 </head>
 
 <body class="red">
@@ -35,7 +35,7 @@ body {
           <div class="container">
               {% for message in get_flashed_messages() %}
               <div class="alert alert-warning">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <button type="button" class="close" data-dismiss="alert" >&times;</button>
                   {{ message }}
               </div>
               {% endfor %}
@@ -52,15 +52,16 @@ body {
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input class="validate" id="email" type="email" name="email">
-            <label for="email" data-error="wrong" data-success="right" class="center-align">Email</label>
+            <input class="validate" id="email" placeholder="Email" type="email" name="email">
+            <label for="email" data-error="wrong" data-success="right" class="center-align"></label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
-            <input class="validate" id="password" type="password" name="passwd">
-            <label for="password">Password</label>
+            <input class="validate" id="password" placeholder="Password" type="password" name="passwd">
+            <label for="password"></label>
+
           </div>
         </div>
         <div class="row">          
@@ -71,7 +72,7 @@ body {
         </div>
         <div class="row">
           <div class="input-field col s12", style="width: 390px">
-            <input type="submit" value="Login" href="status" class="btn waves-effect waves-light col s12"></input>
+            <input type="submit" value="Login" href="status"  class="btn waves-effect waves-light col s12"></input>
           </div>
         </div>
         <div class="row">

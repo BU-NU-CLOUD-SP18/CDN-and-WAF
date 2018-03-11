@@ -1,13 +1,17 @@
 import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from models import db
 from models import User
 
 application = Flask(__name__)
+<<<<<<< HEAD
 application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@localhost/FlaskServer"
+=======
+application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
+>>>>>>> master
 
 db.init_app(application)
 migrate = Migrate(application, db)
@@ -18,17 +22,39 @@ def isUserInDB(email):
 def isPasswdCorr(email, passwd):
     pass
 
-@application.route("/")
+@application.route("/index")
 def index():
     return render_template('index.html')
+
+@application.route('/')
+def view_registered_users():
+    users = User.query.all()
+    return render_template('guest_list.html', guests=users)
+
+@application.route('/register', methods = ['GET'])
+def view_registration_form():
+    return render_template('guest_registration.html')
+
+@application.route('/register', methods = ['POST'])
+def register_guest():
+    name = request.form.get('name')
+    email = request.form.get('email')
+
+
+    user = User(name, email)
+    db.session.add(user)
+    db.session.commit()
+
+    return render_template('guest_confirmation.html',
+        name=name, email=email)
 
 @application.route("/signup")
 def signup():
     return render_template('register.html')
 
-@application.route("/instances")
+@application.route("/status")
 def instances():
-    return render_template('instances.html')
+    return render_template('status.html')
 
 @application.route('/login', methods=['GET'])
 def login_page():
