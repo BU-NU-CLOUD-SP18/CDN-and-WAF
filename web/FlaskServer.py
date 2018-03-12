@@ -7,7 +7,9 @@ from models import db
 from models import User
 
 application = Flask(__name__)
-application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@localhost/FlaskServer"
+
+application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
+
 
 db.init_app(application)
 migrate = Migrate(application, db)
@@ -18,13 +20,48 @@ def isUserInDB(email):
 def isPasswdCorr(email, passwd):
     pass
 
-@application.route("/")
+@application.route("/index")
 def index():
     return render_template('index.html')
 
-@application.route("/signup")
-def signup():
+@application.route('/')
+def view_registered_users():
+    users = User.query.all()
+    return render_template('guest_list.html', guests=users)
+
+@application.route('/register', methods = ['GET'])
+def view_registration_form():
+    return render_template('guest_registration.html')
+
+@application.route('/register', methods = ['POST'])
+def register_guest():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User(name, email, password)
+    db.session.add(user)
+    db.session.commit()
+
+    return render_template('guest_confirmation.html',
+        name=name, email=email)
+
+@application.route("/signup", methods = ['GET'])
+def view_signup():
     return render_template('register.html')
+
+@application.route("/signup", methods = ['POST'])
+def register_user():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User(name, email, password)
+    db.session.add(user)
+    db.session.commit()
+
+    return render_template('guest_confirmation.html',
+        name=name, email=email)
 
 @application.route("/status")
 def instances():
@@ -50,19 +87,7 @@ def login_user():
         return flask.redirect(flask.url_for('login_user'))
     return flask.redirect(flask.url_for('status'))
 
-# Save e-mail to database and send to success page
-@application.route('/prereg', methods=['POST'])
-def prereg():
-    email = None
-    if request.method == 'POST':
-        email = request.form['email']
-        # Check that email does not already exist (not a great query, but works)
-        if not db.session.query(User).filter(User.email == email).count():
-            reg = User(email)
-            db.session.add(reg)
-            db.session.commit()
-            return render_template('success.html')
-    return render_template('index.html')
+
 
 
 if __name__ == "__main__":
