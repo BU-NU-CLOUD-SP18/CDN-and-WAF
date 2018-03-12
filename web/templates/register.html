@@ -31,7 +31,7 @@ body {
 
 <body class="red">
 
-
+<form action="/register" method="POST">
   <div id="login-page" class="row">
     <div class="col s12 z-depth-6 card-panel">
       <form class="login-form">
@@ -44,21 +44,21 @@ body {
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input id="username" type="text" class="validate" placeholder="Username">
+            <input type="text" id="namefield" name="name" class="form-control" aria-describedby="emailHelp" placeholder="Username">
             <label for="username" class="center-align"></label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-communication-email prefix"></i>
-            <input id="email" type="email" class="validate" placeholder="Email">
+            <input type="email" class="form-control" id="emailfield" name="email" aria-describedby="emailHelp" placeholder="Email">
             <label for="email" class="center-align"></label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
-            <input id="password" type="password" class="validate" placeholder="Password">
+            <input type="password" class="form-control" id="passwordfield" name="password" placeholder="Password"">
             <label for="password"></label>
           </div>
         </div>
@@ -71,7 +71,10 @@ body {
         </div>
         <div class="row">
           <div class="input-field col s12">
-            <a href="register.html" class="btn waves-effect waves-light col s12">Register Now</a>
+            <button type="submit" class="btn waves-effect waves-light col s12">
+              Register Now
+            </button>
+            
           </div>
           <div class="input-field col s12">
             <p class="margin center medium-small sign-up">Already have an account? <a href="login">Login</a></p>
@@ -80,7 +83,7 @@ body {
       </form>
     </div>
   </div>
-
+</form>
 <!-- --><!-- Post Page - Responsive -->
 <!-- <ins class="adsbygoogle"
      style="display:inline-block;width:300px;height:250px"
@@ -112,8 +115,8 @@ body {
   ga('send', 'pageview');
 
 </script><script src="//load.sumome.com/" data-sumo-site-id="1cf2c3d548b156a57050bff06ee37284c67d0884b086bebd8e957ca1c34e99a1" async="async"></script>
-
 -->
+
    <footer class="page-footer">
           <div class="footer-copyright">
             <div class="container">
