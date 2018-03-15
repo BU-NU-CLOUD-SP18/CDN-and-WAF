@@ -1,8 +1,27 @@
 # models.py
 import flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+
+engine = create_engine('postgresql://ubuntu:528@128.31.25.73/cdn')
+Base = declarative_base()
+Base.metadata.reflect(engine)
+
+from sqlalchemy.orm import relationship, backref
 
 
+
+# database model from Postgres cdn. Table name 'UserData'
+class Users(Base):
+    __table__ = Base.metadata.tables['UserData']
+
+    def __init__(self, username, email, passwd):
+        self.username = username
+        self.email = email
+        self.passwd = passwd
+        self.originip = None
+"""
 db = SQLAlchemy()
 
 # database model
@@ -34,6 +53,6 @@ class Instance(db.Model):
         self.status = status
 
     def __repr__(self):
-        return '<varnishIp %r, >' % self.varnishIp
+        return '<varnishIp %r, >' % self.varnishIp"""
 
 
