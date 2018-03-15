@@ -4,8 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 from models import *
-#from models import db
 from models import Users
+#from models import db
 
 application = Flask(__name__)
 
@@ -68,7 +68,8 @@ def register_user():
 
 @application.route("/status")
 def instances():
-    return render_template('status.html')
+    instances = db_session.query(InstanceData)
+    return render_template('status.html', instances = instances)
 
 @application.route('/login', methods=['GET'])
 def login_page():

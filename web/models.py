@@ -21,6 +21,10 @@ class Users(Base):
         self.email = email
         self.passwd = passwd
         self.originip = None
+
+class InstanceData(Base):
+    __table__ = Base.metadata.tables['InstanceData']
+
 """
 db = SQLAlchemy()
 
