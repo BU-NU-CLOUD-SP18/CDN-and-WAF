@@ -3,16 +3,19 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-from models import db
-from models import User
+from models import *
+#from models import db
+from models import Users
 
 application = Flask(__name__)
 
-application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
+#application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
 
+from sqlalchemy.orm import scoped_session, sessionmaker, Query
+db_session = scoped_session(sessionmaker(bind=engine))
 
-db.init_app(application)
-migrate = Migrate(application, db)
+#db.init_app(application)
+#migrate = Migrate(application, db)
 
 #backend function
 def isUserInDB(email):
@@ -26,7 +29,7 @@ def index():
 
 @application.route('/')
 def view_registered_users():
-    users = User.query.all()
+    users = db_session.query(Users.email)
     return render_template('guest_list.html', guests=users)
 
 @application.route('/register', methods = ['GET'])
@@ -35,16 +38,16 @@ def view_registration_form():
 
 @application.route('/register', methods = ['POST'])
 def register_guest():
-    name = request.form.get('name')
+    username = request.form.get('name')
     email = request.form.get('email')
-    password = request.form.get('password')
+    passwd = request.form.get('password')
 
-    user = User(name, email, password)
-    db.session.add(user)
-    db.session.commit()
+    user = Users(username, email, passwd)
+    db_session.add(user)
+    db_session.commit()
 
     return render_template('guest_confirmation.html',
-        name=name, email=email)
+        name=username, email=email)
 
 @application.route("/signup", methods = ['GET'])
 def view_signup():
@@ -52,16 +55,16 @@ def view_signup():
 
 @application.route("/signup", methods = ['POST'])
 def register_user():
-    name = request.form.get('name')
+    username = request.form.get('name')
     email = request.form.get('email')
-    password = request.form.get('password')
+    passwd = request.form.get('password')
 
-    user = User(name, email, password)
-    db.session.add(user)
-    db.session.commit()
+    user = Users(username, email, passwd)
+    db_session.add(user)
+    db_session.commit()
 
     return render_template('guest_confirmation.html',
-        name=name, email=email)
+        name=username, email=email)
 
 @application.route("/status")
 def instances():
