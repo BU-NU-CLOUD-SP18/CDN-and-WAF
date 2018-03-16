@@ -27,10 +27,11 @@ def isPasswdCorr(email, passwd):
 def index():
     return render_template('index.html')
 
+# User List page
 @application.route('/')
 def view_registered_users():
-    users = db_session.query(Users.email)
-    return render_template('guest_list.html', guests=users)
+    users = db_session.query(Users)
+    return render_template('guest_list.html', Users=users)
 
 @application.route('/register', methods = ['GET'])
 def view_registration_form():
@@ -53,6 +54,7 @@ def register_guest():
 def view_signup():
     return render_template('register.html')
 
+# Official Signup page
 @application.route("/signup", methods = ['POST'])
 def register_user():
     username = request.form.get('name')
@@ -66,6 +68,7 @@ def register_user():
     return render_template('guest_confirmation.html',
         name=username, email=email)
 
+# Instances status page
 @application.route("/status")
 def instances():
     instances = db_session.query(InstanceData)
