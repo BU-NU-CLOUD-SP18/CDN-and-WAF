@@ -21,31 +21,42 @@
 
 <body>
 <div class="table-title">
-<h3>CDN Table</h3>
+	<h3>CDN Table</h3>
 </div>
+
 <table class="table-fill">
-<thead>
-<tr>
-<th class="text-left">originIP</th>
-<th class="text-left">cacheIP</th>
-<th class="text-left">name</th>
-<th class="text-left">CPU-usage</th>
-<th class="text-left">storage-usage</th>
-</tr>
-</thead>
-<tbody class="table-hover">
-<tr>
-<td class="text-left">128.31.25.73</td>
-<td class="text-left">128.31.25.210</td>
-<td class="text-left">varnish1</td>
-<td class="text-left">30%</td>
-<td class="text-left">70%</td>
-</tr>
-</tbody>
+	<thead>
+		<tr>
+			<th class="text-left">originIP</th>
+			<th class="text-left">cacheIP</th>
+			<th class="text-left">name</th>
+			<th class="text-left">CPU-usage</th>
+			<th class="text-left">storage-usage</th>
+		</tr>
+	</thead>
+	<tbody  >
+		<!--<tr>
+			<td class="text-left">128.31.25.73</td>
+			<td class="text-left">128.31.25.210</td>
+			<td class="text-left">varnish1</td>
+			<td class="text-left">30%</td>
+			<td class="text-left">70%</td>
+		</tr>-->
+	{% for instance in instances %}
+    	<tr>
+    		<td class="text-left">{{ instance.originip }}</td>
+    		<td class="text-left">{{ instance.cacheip }}</td>
+    		<td class="text-left">{{ instance.varnishname }}</td>
+			<td class="text-left">{{ instance.cpu }}</td>
+			<td class="text-left">{{ instance.storage }}</td>
+   		</tr>
+  	{% endfor %}
+
+	</tbody>
+
 </table>
   
-
-  </body>
+</body>
   
   
 
