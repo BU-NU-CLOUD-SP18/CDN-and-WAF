@@ -30,10 +30,20 @@ body {
 </head>
 
 <body class="red">
-
-<form action="/register" method="POST">
+<form action="/signup" method="POST">
   <div id="login-page" class="row">
     <div class="col s12 z-depth-6 card-panel">
+      {% block content %}
+          <div class="container">
+              {% for message in get_flashed_messages() %}
+              <div class="alert alert-warning">
+                  <button type="button" class="close" data-dismiss="alert" >&times;</button>
+                  {{ message }}
+              </div>
+              {% endfor %}
+              {% block page_content %}{% endblock %}
+          </div>
+        {% endblock %}
       <form class="login-form">
         <div class="row">
           <div class="input-field col s12 center">
@@ -121,7 +131,7 @@ body {
           <div class="footer-copyright">
             <div class="container">
             © 2018 Boston University
-            <a class="grey-text text-lighten-4 right" href="http://w3lessons.info">CDN with WAF </a>
+            <a class="grey-text text-lighten-4 right">CDN with WAF </a>
             </div>
           </div>
   </footer>  
