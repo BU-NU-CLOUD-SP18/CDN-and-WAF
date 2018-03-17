@@ -2,70 +2,67 @@ import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+import hashlib, uuid
 
-from models import db
-from models import User
+from models import *
+from models import Users
+#from models import db
 
 application = Flask(__name__)
 
-application.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:cloud528@128.31.25.73/FlaskServer"
-
-
-db.init_app(application)
-migrate = Migrate(application, db)
+from sqlalchemy.orm import scoped_session, sessionmaker, Query
+db_session = scoped_session(sessionmaker(bind=engine))
+salt = uuid.uuid5(uuid.NAMESPACE_DNS, 'cdn').hex.encode('utf-8')
 
 #backend function
 def isUserInDB(email):
-    pass
+    if db_session.query(Users).filter(Users.email == email).all():
+        return True
+    else:
+        return False
+
 def isPasswdCorr(email, passwd):
-    pass
+    passwd_db = hashlib.sha512(passwd + salt).hexdigest()
+    if db_session.query(Users).filter(Users.email == email).filter(Users.passwd == passwd_db).all():
+        return True
+    else:
+        return False
 
 @application.route("/index")
 def index():
     return render_template('index.html')
 
+# User List page
 @application.route('/')
 def view_registered_users():
-    users = User.query.all()
-    return render_template('guest_list.html', guests=users)
-
-@application.route('/register', methods = ['GET'])
-def view_registration_form():
-    return render_template('guest_registration.html')
-
-@application.route('/register', methods = ['POST'])
-def register_guest():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    user = User(name, email, password)
-    db.session.add(user)
-    db.session.commit()
-
-    return render_template('guest_confirmation.html',
-        name=name, email=email)
+    users = db_session.query(Users)
+    return render_template('guest_list.html', Users=users)
 
 @application.route("/signup", methods = ['GET'])
 def view_signup():
     return render_template('register.html')
 
+# Official Signup page
 @application.route("/signup", methods = ['POST'])
 def register_user():
-    name = request.form.get('name')
+    username = request.form.get('name')
     email = request.form.get('email')
-    password = request.form.get('password')
-
-    user = User(name, email, password)
-    db.session.add(user)
-    db.session.commit()
-
+    passwd_plaintext = request.form.get('password').encode('utf-8')
+    passwd = hashlib.sha512(passwd_plaintext + salt).hexdigest()
+    if isUserInDB(email):
+        flash('email already exists!')
+        return flask.redirect(flask.url_for('register_user'))
+    user = Users(username, email, passwd)
+    db_session.add(user)
+    db_session.commit()
     return render_template('guest_confirmation.html',
-        name=name, email=email)
+        name=username, email=email)
 
+# Instances status page
 @application.route("/status")
 def instances():
-    return render_template('status.html')
+    instances = db_session.query(InstanceData)
+    return render_template('status.html', instances = instances)
 
 @application.route('/login', methods=['GET'])
 def login_page():
@@ -75,7 +72,7 @@ def login_page():
 def login_user():
     try:
         email = request.form.get('email')
-        passwd = request.form.get('passwd')
+        passwd = request.form.get('passwd').encode('utf-8')
         if not isUserInDB(email):
             flash('user non-exist')
             return flask.redirect(flask.url_for('login_user'))
@@ -85,7 +82,7 @@ def login_user():
     except:
         flash("fields cannot be blank")
         return flask.redirect(flask.url_for('login_user'))
-    return flask.redirect(flask.url_for('status'))
+    return flask.redirect(flask.url_for('instances'))
 
 
 
