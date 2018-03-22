@@ -43,8 +43,8 @@ while 1:
             roundrobinINT = 0
         response = query.reply()
         response.add_answer(*RR.fromZone(domain+" 299 A "+returnIP))
-        # print("This is the response packet")
-        # print(answer)
+        print("This is the response packet")
+        print(response)
 
         # sock.sendto(answer.pack(), addr)
         sock.sendto(response.pack(),addr)
