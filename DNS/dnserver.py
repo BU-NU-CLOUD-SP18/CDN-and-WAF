@@ -13,7 +13,9 @@ port = 53
 ip = '0.0.0.0'
 customerID = 'abc@bu.edu'
 customerDomains = ['4n4nd.me', 'www.4n4nd.me']
-cacheServerIPs = ['123.123.123.123','172.217.12.196']
+
+cacheServerIPs = ["128.31.26.6","128.31.25.244","128.31.26.50"]
+roundrobinINT = 0
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((ip,port))
@@ -35,8 +37,12 @@ while 1:
         # parsedQ = question.get_q()
         # print("This is the Parsed Question")
         # print(question)
+        returnIP = cacheServerIPs[roundrobinINT]
+        roundrobinINT += 1
+        if roundrobinINT >= len(cacheServerIPs):
+            roundrobinINT = 0
         response = query.reply()
-        response.add_answer(*RR.fromZone(domain+" 299 A 172.217.12.196"))
+        response.add_answer(*RR.fromZone(domain+" 299 A "+returnIP))
         # print("This is the response packet")
         # print(answer)
 
