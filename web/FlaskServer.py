@@ -76,7 +76,7 @@ def register_user():
     if isUserInDB(email):
         flash('email already exists!')
         return flask.redirect(flask.url_for('register_user'))
-    user = Users(username, email, passwd)
+    user = Users(username, email, passwd, None)
     db_session.add(user)
     db_session.commit()
     return render_template('guest_confirmation.html',
