@@ -15,15 +15,25 @@ from sqlalchemy.orm import relationship, backref
 # database model from Postgres cdn. Table name 'UserData'
 class Users(Base):
     __table__ = Base.metadata.tables['UserData']
-
-    def __init__(self, username, email, passwd):
+    def __init__(self, username, email, passwd, originip):
         self.username = username
         self.email = email
         self.passwd = passwd
-        self.originip = None
+        self.originip = originip
 
-class InstanceData(Base):
+class Instances(Base):
     __table__ = Base.metadata.tables['InstanceData']
+    def __init__(self, cacheip, cachename, cpu, storage):
+        self.cacheip = cacheip
+        self.cachename = cachename
+        self.cpu = cpu
+        self.storage = storage
+
+class Joins(Base):
+    __table__ = Base.metadata.tables['CacheMatch']
+    def __init__(self, originip, cacheip):
+        self.originip = originip
+        self.cacheip = cacheip
 
 """
 db = SQLAlchemy()

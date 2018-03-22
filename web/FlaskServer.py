@@ -2,19 +2,39 @@ import flask
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from sqlalchemy.orm import scoped_session, sessionmaker, Query
+import flask.ext.login as flask_login
 import hashlib, uuid
 
 from models import *
 from models import Users
-#from models import db
+from models import Instances
+from models import Joins
 
 application = Flask(__name__)
 
-from sqlalchemy.orm import scoped_session, sessionmaker, Query
+login_manager = flask_login.LoginManager()
+login_manager.init_app(application)
+
 db_session = scoped_session(sessionmaker(bind=engine))
 salt = uuid.uuid5(uuid.NAMESPACE_DNS, 'cdn').hex.encode('utf-8')
 
-#backend function
+class User(flask_login.UserMixin):
+    pass
+
+@login_manager.user_loader
+def user_loader(email):
+    users = getUserList()
+    if not (email) or email not in str(users):
+        return
+    user = User()
+    user.id = email
+    return user
+
+def getUserList():
+    return db_session.query(Users.email).all()
+
+
 def isUserInDB(email):
     if db_session.query(Users).filter(Users.email == email).all():
         return True
@@ -47,8 +67,12 @@ def view_signup():
 def register_user():
     username = request.form.get('name')
     email = request.form.get('email')
+    passwd_again = request.form.get('password-again').encode('utf-8')
     passwd_plaintext = request.form.get('password').encode('utf-8')
     passwd = hashlib.sha512(passwd_plaintext + salt).hexdigest()
+    if passwd_again != passwd_plaintext:
+        flash('please type identical password!')
+        return flask.redirect(flask.url_for('register_user'))
     if isUserInDB(email):
         flash('email already exists!')
         return flask.redirect(flask.url_for('register_user'))
@@ -59,10 +83,16 @@ def register_user():
         name=username, email=email)
 
 # Instances status page
+@flask_login.login_required
 @application.route("/status")
 def instances():
-    instances = db_session.query(InstanceData)
-    return render_template('status.html', instances = instances)
+    #instances = db_session.query(Instances)
+    uid = flask_login.current_user.id
+    uname = db_session.query(Users.username).filter(Users.email == uid)
+    instances = db_session.query(Instances).filter(Instances.cacheip == Joins.cacheip
+                                                    and Joins.originip == Users.originip
+                                                    and Users.email == uid)
+    return render_template('status.html', instances = instances, uname = uname)
 
 @application.route('/login', methods=['GET'])
 def login_page():
@@ -70,20 +100,21 @@ def login_page():
 
 @application.route('/login', methods=['POST'])
 def login_user():
-    try:
-        email = request.form.get('email')
-        passwd = request.form.get('passwd').encode('utf-8')
-        if not isUserInDB(email):
-            flash('user non-exist')
-            return flask.redirect(flask.url_for('login_user'))
-        if not isPasswdCorr(email, passwd):
-            flash("password incorrect")
-            return flask.redirect(flask.url_for('login_user'))
-    except:
+    email = request.form.get('email')
+    passwd = request.form.get('passwd').encode('utf-8')
+    if not isUserInDB(email):
+        flash('user non-exist')
+        return flask.redirect(flask.url_for('login_user'))
+    if not isPasswdCorr(email, passwd):
+        flash("password incorrect")
+        return flask.redirect(flask.url_for('login_user'))
+    if not email or not passwd:
         flash("fields cannot be blank")
         return flask.redirect(flask.url_for('login_user'))
+    user = User()
+    user.id = email
+    flask_login.login_user(user)
     return flask.redirect(flask.url_for('instances'))
-
 
 
 

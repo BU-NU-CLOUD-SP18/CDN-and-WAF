@@ -20,6 +20,11 @@
 </head>
 
 <body>
+<div class="text">
+	{% for un in uname %}
+        <text>Now you've logged in as {{ un }}</text>
+      {% endfor %}
+</div>
 <div class="table-title">
 	<h3>CDN Table</h3>
 </div>
@@ -29,7 +34,7 @@
 		<tr>
 			<th class="text-left">originIP</th>
 			<th class="text-left">cacheIP</th>
-			<th class="text-left">name</th>
+			<th class="text-left">remark</th>
 			<th class="text-left">CPU-usage</th>
 			<th class="text-left">storage-usage</th>
 		</tr>
@@ -46,7 +51,7 @@
     	<tr>
     		<td class="text-left">{{ instance.originip }}</td>
     		<td class="text-left">{{ instance.cacheip }}</td>
-    		<td class="text-left">{{ instance.varnishname }}</td>
+    		<td class="text-left">{{ instance.cachename }}</td>
 			<td class="text-left">{{ instance.cpu }}</td>
 			<td class="text-left">{{ instance.storage }}</td>
    		</tr>
