@@ -84,15 +84,31 @@ def register_user():
 
 # Instances status page
 @flask_login.login_required
-@application.route("/status")
+@application.route("/status", methods=['GET', 'POST'])
 def instances():
-    #instances = db_session.query(Instances)
     uid = flask_login.current_user.id
-    uname = db_session.query(Users.username).filter(Users.email == uid)
+    uname = db_session.query(Users.username).filter(Users.email == uid).all()[0]
     instances = db_session.query(Instances).filter(Instances.cacheip == Joins.cacheip
                                                     and Joins.originip == Users.originip
                                                     and Users.email == uid)
-    return render_template('status.html', instances = instances, uname = uname)
+    joins = db_session.query(Joins).filter(Joins.originip == Users.originip and Users.email == uid)
+    if request.method == 'POST':
+        # field originIP, cacheIP and remark get from JS form, CPU and storage usage are from instance statistic data
+        originip = request.form.get('originip')
+        cacheip = request.form.get('cacheip')
+        remark = request.form.get('remark')
+        user = db_session.query(Users).filter(Users.email == uid).all()[0]
+        user.originip = originip
+        db_session.commit()
+        instance = Instances(cacheip, remark, None, None) # one tricky part is how to get CPU and Storage usage from instance
+        db_session.add(instance)
+        db_session.commit()
+        join_record = Joins(originip, cacheip)
+        db_session.add(join_record)
+        db_session.commit()
+        print(originip, cacheip, remark)
+
+    return render_template('status.html', joins = joins, instances = instances, uname = uname)
 
 @application.route('/login', methods=['GET'])
 def login_page():

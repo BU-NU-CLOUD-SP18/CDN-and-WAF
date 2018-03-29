@@ -22,7 +22,7 @@
 <body>
 <div class="text">
 	{% for un in uname %}
-        <text>Now you've logged in as {{ un }}</text>
+        <text>Now you've logged in as: {{ un }}</text>
       {% endfor %}
 </div>
 <div class="table-title">
@@ -40,31 +40,49 @@
 		</tr>
 	</thead>
 	<tbody  >
-		<!--<tr>
-			<td class="text-left">128.31.25.73</td>
-			<td class="text-left">128.31.25.210</td>
-			<td class="text-left">varnish1</td>
-			<td class="text-left">30%</td>
-			<td class="text-left">70%</td>
-		</tr>-->
+    {% for join in joins %}
 	{% for instance in instances %}
     	<tr>
-    		<td class="text-left">{{ instance.originip }}</td>
+            <!--some logic should be revised here, join and instance should be one to many-->
+            <td class="text-left">{{ join.originip }}</td>
     		<td class="text-left">{{ instance.cacheip }}</td>
     		<td class="text-left">{{ instance.cachename }}</td>
 			<td class="text-left">{{ instance.cpu }}</td>
 			<td class="text-left">{{ instance.storage }}</td>
-   		</tr>
+        </tr>>
   	{% endfor %}
+    {% endfor %}
 
 	</tbody>
 
+    <!--starts with JS script-->
+    <script>
+        function createTable(id)
+        {
+            var originip = document.getElementById("originip").value;
+            var cacheip = document.getElementById("cacheip").value;
+            var remark = document.getElementById("remark").value;
+//            $.post("/status",{"originip":originip})
+//            $.post("/status",{"cacheip":cacheip})
+//            $.post("/status",{"remark":remark})
+            location.reload();
+        }
+    </script>
+
 </table>
-  
-</body>
-  
-  
+
+<!--<button onclick="changetext(this)">Add Instance</button><br/>-->
+
+<form action="/status" method="POST">
+originip:<input type="text" id="originip" name="originip"/>
+cacheip:<input type="text" id="cacheip" name="cacheip"/>
+remark:<input type="text" id="remark" name="remark"/>
+<input type="submit" value="Add Instance"  onclick="createTable(this)"/><br/>
+</form>>
 
 </body>
+
+</body>
+
 
 </html>
