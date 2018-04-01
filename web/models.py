@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('postgresql://ubuntu:528@10.0.0.9/cdn')
+# engine = create_engine('postgresql://ubuntu:528@128.31.25.73/cdn')
 Base = declarative_base()
 Base.metadata.reflect(engine)
 

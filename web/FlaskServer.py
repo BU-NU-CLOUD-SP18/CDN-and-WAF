@@ -84,9 +84,8 @@ def register_user():
 def instances():
     uid = flask_login.current_user.id
     uname = db_session.query(Users.username).filter(Users.email == uid).all()[0]
-    instances = db_session.query(Instances).filter(Instances.cacheip == Joins.cacheip
-                                                    and Joins.originip == Users.originip
-                                                    and Users.email == uid)
+    instances = db_session.query(Instances).join(Joins, Instances.cacheip == Joins.cacheip).join(Users, Joins.originip == Users.originip).filter(Users.email == uid)
+    print(instances)
     joins = db_session.query(Joins).filter(Joins.originip == Users.originip and Users.email == uid)
     if request.method == 'POST':
         # field originIP, cacheIP and remark get from JS form, CPU and storage usage are from instance statistic data
@@ -132,4 +131,5 @@ def login_user():
 
 if __name__ == "__main__":
     application.config['SECRET_KEY'] = "CDN-with_WAF"
+    # application.run(host='0.0.0.0', debug=True, port=6081)
     application.run(host='0.0.0.0', debug=True, port=80)
