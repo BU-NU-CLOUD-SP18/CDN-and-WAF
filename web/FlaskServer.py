@@ -48,15 +48,11 @@ def isPasswdCorr(email, passwd):
     else:
         return False
 
-@application.route("/index")
-def index():
-    return render_template('login.html')
-
 # User List page
 @application.route('/')
-def view_registered_users():
-    users = db_session.query(Users)
-    return render_template('guest_list.html', Users=users)
+def index():
+    # the default should be the login page
+    return render_template('login.html')
 
 @application.route("/signup", methods = ['GET'])
 def view_signup():
