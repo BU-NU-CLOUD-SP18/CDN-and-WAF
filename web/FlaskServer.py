@@ -50,7 +50,7 @@ def isPasswdCorr(email, passwd):
 
 @application.route("/index")
 def index():
-    return render_template('index.html')
+    return render_template('login.html')
 
 # User List page
 @application.route('/')
@@ -136,4 +136,4 @@ def login_user():
 
 if __name__ == "__main__":
     application.config['SECRET_KEY'] = "CDN-with_WAF"
-    application.run(host='0.0.0.0', debug=True, port=6081)
+    application.run(host='0.0.0.0', debug=True, port=80)
