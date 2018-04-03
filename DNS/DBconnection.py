@@ -1,11 +1,15 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import flask
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import scoped_session, sessionmaker, Query
 
-# engine = create_engine('postgresql://ubuntu:528@10.0.0.9/cdn')
-engine = create_engine('postgresql://ubuntu:528@128.31.25.73/cdn')
+from models import *
 
-Session = sessionmaker(bind=engine)
-session = Session()
-for instance in session.query('users'):
-    print(instance)
+db_session = scoped_session(sessionmaker(bind=engine))
+Users = db_session.query(Users.email).all()
+
+for User in Users:
+    print(User.email)
+
+
 # print(session.query('users'))
