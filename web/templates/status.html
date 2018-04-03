@@ -32,26 +32,26 @@
 <table class="table-fill">
 	<thead>
 		<tr>
-			<th class="text-left">originIP</th>
-			<th class="text-left">cacheIP</th>
-			<th class="text-left">remark</th>
-			<th class="text-left">CPU-usage</th>
-			<th class="text-left">storage-usage</th>
+			<th class="text-left">origin-hostname</th>
+			<th class="text-left">hostname</th>
+            <th class="text-left">CNAME</th>
+			<!--<th class="text-left">remark</th>-->
+			<!--<th class="text-left">CPU-usage</th>-->
+			<!--<th class="text-left">storage-usage</th>-->
 		</tr>
 	</thead>
 	<tbody  >
-    {% for join in joins %}
 	{% for instance in instances %}
     	<tr>
             <!--some logic should be revised here, join and instance should be one to many-->
-            <td class="text-left">{{ join.originip }}</td>
-    		<td class="text-left">{{ instance.cacheip }}</td>
-    		<td class="text-left">{{ instance.cachename }}</td>
-			<td class="text-left">{{ instance.cpu }}</td>
-			<td class="text-left">{{ instance.storage }}</td>
+            <td class="text-left">{{ instance.origin_hostname }}</td>
+    		<td class="text-left">{{ instance.hostname }}</td>
+			<td class="text-left">{{ instance.CNAME }}</td>
+    		<!--<td class="text-left">{{ instance.cachename }}</td>-->
+			<!--<td class="text-left">{{ instance.cpu }}</td>-->
+			<!--<td class="text-left">{{ instance.storage }}</td>-->
         </tr>>
   	{% endfor %}
-    {% endfor %}
 
 	</tbody>
 
@@ -59,9 +59,8 @@
     <script>
         function createTable(id)
         {
-            var originip = document.getElementById("originip").value;
-            var cacheip = document.getElementById("cacheip").value;
-            var remark = document.getElementById("remark").value;
+            var originip = document.getElementById("hostname").value;
+            var cacheip = document.getElementById("origin-hostname").value;
 //            $.post("/status",{"originip":originip})
 //            $.post("/status",{"cacheip":cacheip})
 //            $.post("/status",{"remark":remark})
@@ -74,10 +73,9 @@
 <!--<button onclick="changetext(this)">Add Instance</button><br/>-->
 
 <form action="/status" method="POST">
-originip:<input type="text" id="originip" name="originip"/>
-cacheip:<input type="text" id="cacheip" name="cacheip"/>
-remark:<input type="text" id="remark" name="remark"/>
-<input type="submit" value="Add Instance"  onclick="createTable(this)"/><br/>
+hostname:<input type="text" id="hostname" name="hostname"/>
+origin-hostname:<input type="text" id="origin" name="origin-hostname"/>
+<input type="submit" value="Add Hostname"  onclick="createTable(this)"/><br/>
 </form>>
 
 </body>
