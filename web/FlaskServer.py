@@ -75,8 +75,7 @@ def register_user():
     user = Users(username, email, passwd)
     db_session.add(user)
     db_session.commit()
-    return render_template('guest_confirmation.html',
-        name=username, email=email)
+    return render_template('login.html')
 
 # Instances status page
 @flask_login.login_required
