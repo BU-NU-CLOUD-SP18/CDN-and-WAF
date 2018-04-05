@@ -92,7 +92,7 @@ def instances():
         if hostname == "" or origin == "":
             flash("fields cannot be blank")
             return flask.redirect(flask.url_for('instances'))
-        joins = Joins(uid, hostname, '9.9.9.9', origin)     # replace 9.9.9.9 into the real cacheip later
+        joins = Joins(uid, hostname, 'cacheset1.foo.test.com', origin)     # replace dummy data into the real cache set name later
         db_session.add(joins)
         db_session.commit()
     return render_template('status.html', instances = infos, uname = uname)

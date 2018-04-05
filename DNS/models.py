@@ -31,10 +31,10 @@ class Instances(Base):
 
 class Joins(Base):
     __table__ = Base.metadata.tables['CacheMatch']
-    def __init__(self, email, hostname, cacheip, origin_hostname):
+    def __init__(self, email, hostname, cacheset, origin_hostname):
         self.email = email
         self.hostname = hostname
-        self.cacheip = cacheip
+        self.cacheset = cacheset
         self.origin_hostname = origin_hostname
 
 class CNAME(Base):
