@@ -72,11 +72,10 @@ def register_user():
     if isUserInDB(email):
         flash('email already exists!')
         return flask.redirect(flask.url_for('register_user'))
-    user = Users(username, email, passwd, None)
+    user = Users(username, email, passwd)
     db_session.add(user)
     db_session.commit()
-    return render_template('guest_confirmation.html',
-        name=username, email=email)
+    return render_template('login.html')
 
 # Instances status page
 @flask_login.login_required
@@ -84,26 +83,19 @@ def register_user():
 def instances():
     uid = flask_login.current_user.id
     uname = db_session.query(Users.username).filter(Users.email == uid).all()[0]
-    instances = db_session.query(Instances).join(Joins, Instances.cacheip == Joins.cacheip).join(Users, Joins.originip == Users.originip).filter(Users.email == uid)
-    print(instances)
-    joins = db_session.query(Joins).filter(Joins.originip == Users.originip and Users.email == uid)
+    infos = db_session.query(Joins).filter(Joins.email == uid).all()
+    for i in range(0, len(infos)):
+        infos[i].CNAME = infos[i].hostname + '.foo.test.me'
     if request.method == 'POST':
-        # field originIP, cacheIP and remark get from JS form, CPU and storage usage are from instance statistic data
-        originip = request.form.get('originip')
-        cacheip = request.form.get('cacheip')
-        remark = request.form.get('remark')
-        user = db_session.query(Users).filter(Users.email == uid).all()[0]
-        user.originip = originip
+        hostname = request.form.get('hostname')
+        origin = request.form.get('origin-hostname')
+        if hostname == "" or origin == "":
+            flash("fields cannot be blank")
+            return flask.redirect(flask.url_for('instances'))
+        joins = Joins(uid, hostname, '9.9.9.9', origin)     # replace 9.9.9.9 into the real cacheip later
+        db_session.add(joins)
         db_session.commit()
-        instance = Instances(cacheip, remark, None, None) # one tricky part is how to get CPU and Storage usage from instance
-        db_session.add(instance)
-        db_session.commit()
-        join_record = Joins(originip, cacheip)
-        db_session.add(join_record)
-        db_session.commit()
-        print(originip, cacheip, remark)
-
-    return render_template('status.html', joins = joins, instances = instances, uname = uname)
+    return render_template('status.html', instances = infos, uname = uname)
 
 @application.route('/login', methods=['GET'])
 def login_page():
@@ -131,5 +123,5 @@ def login_user():
 
 if __name__ == "__main__":
     application.config['SECRET_KEY'] = "CDN-with_WAF"
-    # application.run(host='0.0.0.0', debug=True, port=6081)
-    application.run(host='0.0.0.0', debug=True, port=80)
+    application.run(host='0.0.0.0', debug=True, port=6081)
+    # application.run(host='0.0.0.0', debug=True, port=80)
