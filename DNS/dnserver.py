@@ -12,7 +12,7 @@ def queryExternalDNS(data):
 port = 53
 ip = '0.0.0.0'
 customerID = 'abc@bu.edu'
-customerDomains = ['4n4nd.me', 'www.4n4nd.me']
+customerDomains = ['4n4nd.me', 'www.4n4nd.me', 'fester.redgates.com.cdn.4n4nd.me']
 
 cacheServerIPs = ["128.31.26.6","128.31.25.244","128.31.26.50"]
 roundrobinINT = 0
