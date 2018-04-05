@@ -1,10 +1,10 @@
 from sqlalchemy import create_engine
 
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models import Users
+from models import *
 
-# engine = create_engine('postgresql://ubuntu:528@10.0.0.9/cdn')
-engine = create_engine('postgresql://ubuntu:528@128.31.25.73/cdn')
+engine = create_engine('postgresql://ubuntu:528@10.0.0.9/')
+# engine = create_engine('postgresql://ubuntu:528@128.31.25.73/')
 
 # Session = sessionmaker(bind=engine)
 # session = scoped_session(sessionmaker(bind=engine))
@@ -17,12 +17,13 @@ engine = create_engine('postgresql://ubuntu:528@128.31.25.73/cdn')
 # from sqlalchemy.orm import scoped_session, sessionmaker, Query
 #
 # from models import *
-
+print("comes here")
 db_session = scoped_session(sessionmaker(bind=engine))
-Users = db_session.query(Users.username).all()[0]
-
+print("comes here 2")
+Users = db_session.query(Users).all()
+print("comes here 3")
 for User in Users:
-    print(User)
+    print(User.email)
 
 
 # print(session.query('users'))
