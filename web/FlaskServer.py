@@ -90,6 +90,9 @@ def instances():
     if request.method == 'POST':
         hostname = request.form.get('hostname')
         origin = request.form.get('origin-hostname')
+        if hostname == "" or origin == "":
+            flash("fields cannot be blank")
+            return flask.redirect(flask.url_for('instances'))
         joins = Joins(uid, hostname, '9.9.9.9', origin)     # replace 9.9.9.9 into the real cacheip later
         db_session.add(joins)
         db_session.commit()
@@ -121,5 +124,5 @@ def login_user():
 
 if __name__ == "__main__":
     application.config['SECRET_KEY'] = "CDN-with_WAF"
-    # application.run(host='0.0.0.0', debug=True, port=6081)
-    application.run(host='0.0.0.0', debug=True, port=80)
+    application.run(host='0.0.0.0', debug=True, port=6081)
+    # application.run(host='0.0.0.0', debug=True, port=80)
