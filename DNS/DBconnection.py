@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from models import *
 
-engine = create_engine('postgresql://ubuntu:528@10.0.0.9/')
+engine = create_engine('postgresql://ubuntu:528@10.0.0.9/cdn')
 # engine = create_engine('postgresql://ubuntu:528@128.31.25.73/')
 
 # Session = sessionmaker(bind=engine)
@@ -24,6 +24,6 @@ Users = db_session.query(Users).all()
 print("comes here 3")
 for User in Users:
     print(User.email)
-
+#print(Users.email)
 
 # print(session.query('users'))
