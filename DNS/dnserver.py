@@ -14,7 +14,7 @@ ip = '0.0.0.0'
 customerID = 'abc@bu.edu'
 customerDomains = ['4n4nd.me', 'www.4n4nd.me', 'fester.redgates.com.cdn.4n4nd.me']
 
-cacheServerIPs = ["128.31.26.6","128.31.25.244","128.31.26.50"]
+cacheServerIPs = ["128.31.26.6","128.31.26.50","128.31.25.244"]
 roundrobinINT = 0
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

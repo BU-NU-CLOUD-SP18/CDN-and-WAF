@@ -77,6 +77,10 @@ def register_user():
     db_session.commit()
     return render_template('login.html')
 
+@application.route("/forgot-password", methods = ['GET'])
+def forgot_password():
+    return render_template('forgot-password.html')
+
 # Instances status page
 @flask_login.login_required
 @application.route("/status", methods=['GET', 'POST'])
@@ -85,14 +89,14 @@ def instances():
     uname = db_session.query(Users.username).filter(Users.email == uid).all()[0]
     infos = db_session.query(Joins).filter(Joins.email == uid).all()
     for i in range(0, len(infos)):
-        infos[i].CNAME = infos[i].hostname + '.foo.test.me'
+        infos[i].CNAME = infos[i].hostname + '.4n4nd.me'
     if request.method == 'POST':
         hostname = request.form.get('hostname')
         origin = request.form.get('origin-hostname')
         if hostname == "" or origin == "":
             flash("fields cannot be blank")
             return flask.redirect(flask.url_for('instances'))
-        joins = Joins(uid, hostname, 'cacheset1.foo.test.com', origin)     # replace dummy data into the real cache set name later
+        joins = Joins(uid, hostname, 'cacheset1.4n4nd.me', origin)     # replace dummy data into the real cache set name later
         db_session.add(joins)
         db_session.commit()
     return render_template('status.html', instances = infos, uname = uname)
@@ -123,5 +127,5 @@ def login_user():
 
 if __name__ == "__main__":
     application.config['SECRET_KEY'] = "CDN-with_WAF"
-    application.run(host='0.0.0.0', debug=True, port=6081)
-    # application.run(host='0.0.0.0', debug=True, port=80)
+    # application.run(host='0.0.0.0', debug=True, port=6081)
+    application.run(host='0.0.0.0', debug=True, port=80)
