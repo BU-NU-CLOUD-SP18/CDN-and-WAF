@@ -94,7 +94,20 @@ An Ubuntu VM instance can do this job.
 4) Customer deletes A record for abc.jadedhang.com
 5) Customer creates CNAME record for abc.jadedhang.com pointing to abc.jadedhang.com.4n4nd.me
 
-### 6.Timeline
+To sign up for our service
+1. The user must access our webpage: www.bucdn.sytes.net
+2. Register for an account
+3. Reguster their static content by entering hostname and origin-hostname
+
+### 6. Deployment
+MOC Instances
+1. Instance 1 : Web_Server (Flask Server)
+2. Instance 2 : DNS_Server (DNS management)
+3. Instance 3 : Data_Store (PostgresQL)
+4. Instance 4 : VarnishCache (Varnish Cache Server)
+All instances are Ubuntu-16 with Floating IP addresses binded
+
+### 7.Timeline
 * Sprint1
   * Project design
 * Sprint2
