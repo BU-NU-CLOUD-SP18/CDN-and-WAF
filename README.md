@@ -14,13 +14,13 @@ Our CDN will need to satisfy the following requirements:
 - 2. Instantiate virtual instances to construct cache servers dynamically. 
 - 3. Log behavior that seems unusual.
 - 4. Provide a REST-like or REST API to the clients for managing servers.
-- 5. Provide visual interface for demo purposes, developed in React.js.
+- 5. Provide visual interface for demo purposes.
 
 Our ultimate goal is to generate our own limited CDN with integrated Web Application Firewall and provide an API to manage web services for prospective customers.
 
 <hr>
 
-### 2. Users/Personas Of The Project:
+### 2. Users/Persons Of The Project:
 
 CDN with WAF will be used by the website owner who want to be able to scale their web services without adding their own infrastructure or want to scale their load for flash crowds without a large capital investment.
 <hr>
@@ -28,7 +28,7 @@ CDN with WAF will be used by the website owner who want to be able to scale thei
 ### 3. Scope and Features Of The Project:
 
 - We will use virtual machines instances on MOC OpenStack to simulate the origin server behavior in our system.
-- In order to validate our ability to scale the customers website, we will use load generating tools to simulate a large number of clients.
+- We will use OpenStack API to generate new instances to achieve auto scaling feature.
 - We will customize our own DNS services to guarantee best fetching speed for clients. 
 - We will develop firewall, leveraging mod_security or some WAF technology to filter and track common cyber attacks against the customers of our CDN system. 
 - Users can access our provided services via RESTful web APIs.
@@ -51,7 +51,7 @@ The origin server is the main web server that is being cached in the Varnish Cac
 
  - This can be a simple model website where we are trying to balance load using cache server.
  - This is where we will test if the website is able to handle high load (Send huge amounts of traffic here and see if the cache servers are able to distribute the load).
- - A Raspberry Pi with a simple web server can be used to simulate an origin server.
+ - A simple static web page can be used to simulate an origin server.
 
 #### Varnish Cache Server
 Simple low CPU powered instances with varnish cache installed and pointing to an origin server.
@@ -75,25 +75,31 @@ An Ubuntu VM instance can do this job.
 <hr>
 
 ### 5. Acceptance criteria
+ - Finish each component in system architecture diagram.
  - Shows clear efficiency in load balancing and latency versus system without CDN.
- - Demonstrates the availability to filter cyber attacks.
- - Provides clients accessible RESTful APIs.  
+ - Provides clients web portals and accessible RESTful APIs.  
 
 <hr>
 
-### 6.Demo Plans
-Demonstrate Web user interface to display back-end modules and processes.
-
- - Basic user management functions without infrastructure
- - Data Store Server
- - Management and DNS Management Server
-
-Demonstrate client-side usage with Cache access. 
- - Without load balancing
- - With load balancing but without security layers
- - With security layers
-
-Load Scaling Demonstration (autoscale)
+### 6.Timeline
+* Sprint1
+  * Project design
+* Sprint2
+  * Merged components and set up instances in MOC
+  * Flask Server setup
+  * A Varnish Instance was tested as a caching server for a simple HTML website
+* Sprint3
+  * Setup DNS server
+  * PostgresQL database integration
+  * Tested Varnish Instance with a sample website
+* Sprint4
+  * Connect customer’s origin server to our CDN
+  * Combine web server database to dns server
+  * Redirect user’s request to our cache server 
+* Sprint5
+  * Configured Varnish Security Firewall
+  * Tested VSF event with log
+  * Developed auto-scaling 
 
 # Team Members
 
