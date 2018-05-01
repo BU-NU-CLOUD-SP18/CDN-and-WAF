@@ -97,7 +97,7 @@ An Ubuntu VM instance can do this job.
 To sign up for our service
 1. The user must access our webpage: www.bucdn.sytes.net
 2. Register for an account
-3. Reguster their static content by entering hostname and origin-hostname
+3. Registering static web pages by entering hostname and origin-hostname
 
 ### 6. Deployment
 MOC Instances
