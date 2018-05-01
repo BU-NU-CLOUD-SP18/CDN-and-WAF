@@ -81,6 +81,19 @@ An Ubuntu VM instance can do this job.
 
 <hr>
 
+### CDN Service Procedure  
+
+1) Customer has a site at abc.jadedhang.com
+  * Has A record pointing  abc.jadedhang.com to 1.1.1.1 as the origin server
+2) Register with our CDN
+  * configure abc.jadedhang.com to be hosted with the CDN
+  * In the UI customer configures hosted sitename and origin server
+    ( abc.jadedhang.com and www.jadedhang.com )
+  * Mgmt portal tells customer the CNAME pointer to configure for hosted site name   ( probably abc.jadedhang.com.4n4nd.me ) 
+3) Customer adds A record for www.jadedhang.com as 1.1.1.1
+4) Customer deletes A record for abc.jadedhang.com
+5) Customer creates CNAME record for abc.jadedhang.com pointing to abc.jadedhang.com.4n4nd.me
+
 ### 6.Timeline
 * Sprint1
   * Project design
