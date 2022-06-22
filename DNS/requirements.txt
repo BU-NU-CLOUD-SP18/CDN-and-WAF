@@ -23,7 +23,7 @@ keystoneauth1==3.4.0
 louis==3.0.0
 Mako==1.0.7
 MarkupSafe==1.0
-numpy==1.14.0
+numpy==1.22.0
 pbr==3.1.1
 pexpect==4.2.1
 Pillow==4.0.0
